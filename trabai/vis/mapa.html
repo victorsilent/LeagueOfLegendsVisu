@@ -1,0 +1,228 @@
+
+<html>
+<head>
+    <meta charset="utf-8">
+<script
+			  src="https://code.jquery.com/jquery-2.2.4.min.js"
+			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			  crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<title>Aqui é trabalho parça</title>
+</head>
+<body>
+<div id="container"></div>
+<select form="role"  id="eixoX">
+  <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
+  <option id="Duration"value="duration">Duration</option>
+  <option value="DUO_CARRY">Ad Carry</option>
+  <option value="TOP">Top</option>
+  <option value="JUNGLE">Jungle</option>
+</select>
+
+<select form="role" id="eixoY">
+  <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
+  <option value="DUO_SUPPORT">Suporte</option>
+  <option value="DUO_CARRY">Ad Carry</option>
+  <option value="TOP">Top</option>
+  <option value="JUNGLE">Jungle</option>
+</select>
+<button id="button">Atualizar</button>
+
+<script type="text/javascript">
+	var teste;
+	//Leitura do CSV
+	d3.json("ENOIS.json", function(data) {
+
+		
+        function generateData(eixoX,eixoY){
+
+            var opt1 = eixoX
+            var opt2 = eixoY
+            var series=[]
+            var seriesJungle=[]
+            var seriesAdc=[]
+            var seriesTop=[]
+            var seriesMid=[]
+            var seriesSupport=[]
+
+    		for(i=0;i<=data.length-1;i++){
+    			if (data[i].role=="TOP"){
+                    var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
+                    seriesTop.push(champ)
+                    champ={}
+    			}else if(data[i].role=="JUNGLE"){
+                    var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
+                    seriesJungle.push(champ)
+                    champ={}
+                }else if(data[i].role=="MIDDLE"){
+                    var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
+                    seriesMid.push(champ)
+                    champ={}
+                }else if(data[i].role=="DUO_CARRY"){
+                    var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
+                    seriesAdc.push(champ)
+                    champ={}
+                }else if(data[i].role=="DUO_SUPPORT"){
+                    var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
+                    seriesSupport.push(champ)
+                    champ={}
+                }
+    		}
+
+            series=[seriesTop,seriesJungle,seriesMid,seriesAdc,seriesSupport]
+
+            return series
+
+        }
+
+		// Data gathered from http://populationpyramid.net/germany/2015/
+
+
+
+
+
+
+        $(function () {
+            $('#container').highcharts({
+                chart: {
+                    type: 'scatter',
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'League of Legends - Data Visualization'
+                },
+                subtitle: {
+                    text: 'Itim, Zezé, Vitim, Pedrim'
+                },
+                xAxis: {
+                    title: {
+                        enabled: true,
+                        text: 'Height (cm)'
+                    },
+                    startOnTick: true,
+                    endOnTick: true,
+                    showLastLabel: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Weight (kg)'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'left',
+                    verticalAlign: 'top',
+                    x: 100,
+                    y: 70,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                    borderWidth: 1
+                },
+                plotOptions: {
+                     series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log(this)
+                                }
+                            }
+                        }
+                    },
+                    scatter: {
+                        marker: {
+                            radius: 5,
+                            states: {
+                                hover: {
+                                    enabled: true,
+                                    lineColor: 'rgb(100,100,100)'
+                                }
+                            }
+                        },
+                        states: {
+                            hover: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '',
+                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> damage tanken<br> <b>{point.y}</b> damage dealt<br>'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Top',
+                    color: 'rgba(27,158,119, .8)',
+                    data: []
+
+                },
+                {
+                    name: 'Jungle',
+                    color: 'rgba(217,95,2, .8)',
+                    data: []
+                },
+                {
+                    name: 'Mid',
+                    color: 'rgba(117,112,179, .8)',
+                    data: []
+                },
+                {
+                    name: 'Adc',
+                    color: 'rgba(231,41,138, .8)',
+                    data: []
+                },
+                {
+                    name: 'Support',
+                    color: 'rgba(102,166,30, .8)',
+                    data: []
+                }]
+            });
+            $('#button').click(function() {
+                //1º
+                 var indexX = document.getElementById("eixoX").selectedIndex
+                 var valueX = document.getElementById("eixoX").value
+                 var nomeCertoX=$("#eixoX option")[indexX].id
+
+                //2º
+                 var indexY = document.getElementById("eixoY").selectedIndex
+                 var valueY = document.getElementById("eixoY").value
+                 var nomeCertoY=$("#eixoY option")[indexY].id
+                 console.log(valueX+' '+valueY)
+                series = generateData(valueX,valueY)
+                console.log(series[0])
+
+                var chart = $('#container').highcharts();
+                chart.series[0].setData(series[0], false);
+                chart.series[1].setData(series[1], false);
+                chart.series[2].setData(series[2], false);
+                chart.series[3].setData(series[3], false);
+                chart.series[4].setData(series[4], false);
+                chart.yAxis[0].axisTitle.attr({
+                    text: nomeCertoY
+                });
+                chart.xAxis[0].axisTitle.attr({
+                    text: nomeCertoX
+                });
+                for(i=0;i<=4;i++){
+                    chart.series[i].update({
+                        tooltip:{
+                            headerFormat: '',
+                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> '+ nomeCertoX+'<br> <b>{point.y}</b> '+ nomeCertoY+'<br>'
+                        }
+                    })
+                }
+                
+                $('#container').highcharts().redraw();
+
+            });
+            
+        });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" media="screen" title="bootstrap" charset="utf-8">
+<link rel="stylesheet" href="css/dc.css">
+ <script src="js/crossfilter.js" charset="utf-8"></script>
+ <script src="js/d3.v3.min.js" charset="utf-8"></script>
+ <script src="js/dc.js" charset="utf-8"></script>
+
+
+
+<title>Dados por Role</title>
+</head>
+<body>
+
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="index.html">League of Legends - Visualização de dados</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="role.html">Dados por Role</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+<select form="role" onchange="redraw(this)" id="asdasda">
+  <option id="teste" value="MIDDLE">Mid</option>
+  <option value="DUO_SUPPORT">Suporte</option>
+  <option value="DUO_CARRY">Ad Carry</option>
+  <option value="TOP">Top</option>
+  <option value="JUNGLE">Jungle</option>
+</select>
+    <div id="damageDealt">
+    </div>
+    <div id="damageTaken">
+    </div>
+	<div id="averageTime">
+    </div>
+
+
+<script type="text/javascript">
+
+ function redraw(name){
+     console.log(document.getElementById("asdasda").value)
+ }
+    function print_filter(filter) {
+      var f = eval(filter);
+      if (typeof(f.length) != "undefined") {}else{}
+      if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+      if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+      console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+    };
+
+    var damageDealt = dc.barChart("#damageDealt");
+    var damageTaken = dc.barChart("#damageTaken");
+	var	averageTime = dc.barChart("#averageTime");
+    d3.json("ENOIS.json", function(data){
+
+        var dados = crossfilter(data);
+        var role = "MIDDLE"
+        var roleDim = dados.dimension(function(d){
+                return d.role;
+        });
+        roleDim.filter("MIDDLE")
+        var champDim = dados.dimension(function(d){
+                return d.championId;
+        });
+        var damageDealtGroup = champDim.group().reduceSum(function(d){
+            return Math.floor(d.totalDamageDealtToChampions/d.count);
+        });
+        var damageTakenGroup = champDim.group().reduceSum(function(d){
+            return Math.floor(d.totalDamageTaken/d.count);
+        });
+
+
+		var averageTimeGroup = champDim.group().reduceSum(function(d){
+            return Math.floor(d.duration);
+        });
+        
+
+
+        damageDealt
+            .width(1200)
+            .height(480)
+            .margins({ top: 10, right: 50, bottom: 80, left: 80 })
+            .x(d3.scale.ordinal().domain(data.map(function (d) {if(d.role=="MIDDLE"){return d.championId;} })))
+            .yAxisLabel("Dano total causado")
+            .dimension(champDim)
+            .group(damageDealtGroup)
+            .xUnits(dc.units.ordinal)
+			.on('renderlet', function (chart) {
+		        chart.selectAll("g.x text")
+                    chart.selectAll("g.x text")
+                    .attr('transform', "rotate(-35)")
+                    .attr('x', "-18px");
+                
+				chart.selectAll('rect').on("click", function(d) {
+				    //console.log(d.x);
+				})
+		        
+            });
+        damageDealt.render();
+
+
+
+        damageTaken
+            .width(1200)
+            .height(480)
+            .margins({ top: 10, right: 50, bottom: 80, left: 80 })
+            .x(d3.scale.ordinal().domain(data.map(function (d) {if(d.role=="MIDDLE"){return d.championId;} })))
+            .brushOn(false)
+            .yAxisLabel("Dano Recebido")
+            .dimension(champDim)
+            .group(damageTakenGroup)
+            .xUnits(dc.units.ordinal)
+			.on('renderlet', function (chart) {
+		        chart.selectAll("g.x text")
+                    chart.selectAll("g.x text")
+                    .attr('transform', "rotate(-35)")
+                    .attr('x', "-18px");
+                
+				chart.selectAll('rect').on("click", function(d) {
+				    //console.log(d.x);
+				})
+		        
+            });
+
+        damageTaken.render();
+
+
+
+
+		averageTime
+            .width(1200)
+            .height(480)
+            .margins({ top: 10, right: 50, bottom: 80, left: 80 })
+            .x(d3.scale.ordinal().domain(data.map(function (d) {if(d.role=="MIDDLE"){return d.championId;} })))
+            .brushOn(false)
+            .yAxisLabel("Tempo médio das partidas")
+            .dimension(champDim)
+            .group(averageTimeGroup)
+            .xUnits(dc.units.ordinal)
+			.on('renderlet', function (chart) {
+		        chart.selectAll("g.x text")
+                    chart.selectAll("g.x text")
+                    .attr('transform', "rotate(-35)")
+                    .attr('x', "-18px");
+                
+				chart.selectAll('rect').on("click", function(d) {
+				    //console.log(d.x);
+				})
+		        
+            });
+        
+        averageTime.render();
+			
+
+
+    });
+
+
+</script>
+<script type="text/javascript">
+	var teste;
+	//Leitura do CSV
+	d3.json("ENOIS.json", function(data) {
+		var champs=[];
+		var magic=[];
+		var fisical=[];
+
+		for(i=0;i<=data.length-1;i++){
+			if (data[i].role=="TOP"){
+				champs.push(data[i].championId);
+				magic.push(data[i].magicDamageTaken);
+				fisical.push(data[i].physicalDamageTaken);
+			}
+		}
+	});
+</script>
+</body>
+</html>

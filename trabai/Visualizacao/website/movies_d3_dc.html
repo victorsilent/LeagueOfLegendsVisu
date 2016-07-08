@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lolzim melhor que o do nilo</title>
+    <link rel="stylesheet" href="css/dc.css">
+    <link rel="stylesheet" href="css/milligram.min.css">
+    <script src="js/crossfilter.js" charset="utf-8"></script>
+    <script src="js/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/dc.js" charset="utf-8"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <style media="screen">
+      body{
+        margin: 0;
+        padding: 0;
+        color: #fff;
+      }
+      .teste{
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2) 98.4%) repeat fixed, url(img/bg.jpg);
+        background-size: cover;
+        min-height:90vh;
+      }
+
+      .text-center{
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+
+	<!--
+  <div id="bil"></div>
+	<div id="lol"></div>
+  -->
+
+
+
+  <div class="row">
+    <div class="column ">.column</div>
+    <div class="column column-50 column-offset-25">.column column-50 column-offset-25</div>
+  </div>
+
+
+
+	<script type="text/javascript">
+ 	var bil = dc.rowChart("#bil");
+	var lol = dc.barChart("#lol");
+  function print_filter(filter) {
+    var f = eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+  };
+		d3.json("ENOIS.json", function(data){
+			// formatando nossos dados
+        console.log(data)
+
+            //criando um crossfilter
+        var facts = crossfilter(data);
+
+        //DIMENSÕES
+        var genreDim = facts.dimension(function(d){
+          return d.championId;
+        });
+        print_filter(genreDim);
+        var bilheteriaGroup = genreDim.group().reduceSum(function(d){
+          return d.wardsPlaced;
+        });
+
+        var champDim = facts.dimension(function(d){
+          return d.championId;
+        });
+        var magicGroup = champDim.group().reduceSum(function(d){
+          return d.magicDamageDealtToChampions;
+        });
+
+           bil
+              .width(1200)
+        .height(500)
+        .margins({top: 20, left: 10, right: 10, bottom: 20})
+        .group(bilheteriaGroup)
+        .dimension(genreDim)
+	.rowsCap(30)
+	.ordering(function(d) { return -d.value })
+	.colors(d3.scale.category10())
+        .label(function (d) {
+            return d.key;
+        })
+	.title(function (d) {
+            return d.value;
+        })
+        .elasticX(true)
+	.ordering(function (d) { return -d.wardsPlaced; });
+            bil.render();
+
+/*lol
+              .width(1200)
+              .height(480)
+              .margins({ top: 10, right: 50, bottom: 30, left: 40 })
+              .x(d3.scale.ordinal().domain(data.map(function (d) {return d.championId; })))
+              .brushOn(false)
+              .yAxisLabel("magic damage by Champ")
+              .dimension(champDim)
+              .group(magicGroup)
+		            .ordering(function(d){return d.value})
+              .xUnits(dc.units.ordinal)
+            lol.render();
+/*
+			var genreDim = facts.dimension(function(d){
+                return d.Genre;
+            });
+
+			//GROUPS
+            var bilGroup = dateDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+			var bilheteriaGroup = genreDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+            var teste = bilheteriaGroup.orderNatural();
+*/
+		});
+	</script>
+</body>
+</html>

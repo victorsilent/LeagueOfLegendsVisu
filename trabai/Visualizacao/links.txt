@@ -1,0 +1,2 @@
+Itens: https://global.api.pvp.net/api/lol/static-data/br/v1.2/item?itemListData=all&api_key=6dbf72c8-3990-4820-a58a-21e020c0cbdb
+Champs: https://global.api.pvp.net/api/lol/static-data/br/v1.2/champion?champData=all&api_key=6dbf72c8-3990-4820-a58a-21e020c0cbdb

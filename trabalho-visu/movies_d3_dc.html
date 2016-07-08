@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Filmes ordenados JSON</title>
+    <link rel="stylesheet" href="css/dc.css">
+    <script src="js/crossfilter.js" charset="utf-8"></script>
+    <script src="d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/dc.js" charset="utf-8"></script>
+
+</head>
+<body>
+    <div id="chart"></div>
+	<br>
+	<div id="bil"></div>
+	<script type="text/javascript">
+  var bil = dc.barChart("#bil");
+  function print_filter(filter) {
+    var f = eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+  };
+		d3.json("TESTANU.json", function(data){
+			// formatando nossos dados
+          console.log(data)
+
+            //criando um crossfilter
+            var facts = crossfilter(data);
+
+			//DIMENSÕES
+            var genreDim = facts.dimension(function(d){
+                return d.championId;
+            });
+            var bilheteriaGroup = genreDim.group().reduceSum(function(d){
+                return d.wardsPlaced;
+            });
+            print_filter(bilheteriaGroup)
+
+           bil
+              .width(680)
+              .height(480)
+              .margins({ top: 10, right: 50, bottom: 30, left: 40 })
+              .x(d3.scale.ordinal().domain(data.map(function (d) {return d.championId; })))
+              .brushOn(false)
+              .yAxisLabel("Total por Gênero")
+              .dimension(genreDim)
+              .group(bilheteriaGroup)
+              .xUnits(dc.units.ordinal)
+            bil.render();
+/*
+			var genreDim = facts.dimension(function(d){
+                return d.Genre;
+            });
+
+			//GROUPS
+            var bilGroup = dateDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+			var bilheteriaGroup = genreDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+            var teste = bilheteriaGroup.orderNatural();
+*/
+		});
+	</script>
+</body>
+</html>
