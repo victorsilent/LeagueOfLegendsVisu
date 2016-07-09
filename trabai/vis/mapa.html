@@ -42,7 +42,7 @@
 	d3.json("ENOIS.json", function(data) {
 
 		
-        function generateData(eixoX,eixoY,lane=false){
+        function generateData(eixoX,eixoY,lane=false,champ=false){
 
             var opt1 = eixoX
             var opt2 = eixoY
@@ -84,29 +84,46 @@
                 var damageTaken = 0,damageDealt = 0,kills = 0,assists = 0,deaths = 0,goldEarned = 0, winrate = 0,count =0
                 for(i=0;i<=data.length-1;i++){
                     if (data[i].role==lane){
-                        winrate     += data[i].winrate
-                        damageTaken += data[i].physicalDamageTaken+data[i].magicDamageTaken+data[i].trueDamageTaken
-                        damageDealt += data[i].physicalDamageDealtToChampions+
-                                       data[i].magicDamageDealtToChampions+data[i].trueDamageDealtToChampions
-                        kills       += data[i].kills
-                        assists     += data[i].assists
-                        deaths      += data[i].deaths
-                        goldEarned  += data[i].goldEarned
+                        if(data[i].winrate<champ.winrate){
+                            winrate     +=  1
+                        }
+                        if(data[i].physicalDamageTaken+data[i].magicDamageTaken+data[i].trueDamageTaken
+                            <
+                            champ.physicalDamageTaken+champ.magicDamageTaken+champ.trueDamageTaken){
+                            damageTaken +=  1
+                        }
+                        if(data[i].physicalDamageDealtToChampions+data[i].magicDamageDealtToChampions+data[i].trueDamageDealtToChampions
+                            <
+                            champ.physicalDamageDealtToChampions+champ.magicDamageDealtToChampions+champ.trueDamageDealtToChampions){
+
+                            damageDealt +=  1
+
+                        }
+                        if(data[i].kills<champ.kills){
+                            kills       +=  1
+                        }
+                        if(data[i].assists<champ.assists){
+                            assists     +=  1
+                        }
+                        if(data[i].deaths<champ.deaths){
+                            deaths      +=  1
+                        }
+                        if(data[i].goldEarned<champ.goldEarned){
+                            goldEarned  +=  1
+                        }
                         count++
                         
                     }
                 }
-                series = {winrate:winrate/count,damageTaken:damageTaken/count,damageDealt:damageDealt/count,kills:kills/count,assists:assists/count,deaths:deaths/count,goldEarned:goldEarned/count}
+                series = {winrate:winrate,damageTaken:damageTaken,damageDealt:damageDealt,kills:kills,assists:assists,deaths:deaths,goldEarned:goldEarned,count:count}
+
                 return series
+
             }
 
             
 
         }
-
-		// Data gathered from http://populationpyramid.net/germany/2015/
-
-
 
 
 
@@ -277,9 +294,18 @@
                 }
                  console.log(champ.assists)
 
-                average = generateData(0,0,lane)
+                average = generateData(0,0,lane,champ)
                 var radarData
                 radarData = [
+                    [
+                        {axis: "kills", value: Math.floor(average.count/2)},
+                        {axis: "assists", value: Math.floor(average.count/2)},
+                        {axis: "deaths", value: Math.floor(average.count/2)},
+                        {axis: "gold", value:Math.floor(average.count/2)},
+                        {axis: "taken", value: Math.floor(average.count/2)},
+                        {axis: "dealt", value: Math.floor(average.count/2)},
+                        {axis: "winrate", value: Math.floor(average.count/2)}
+                    ],
                     [
                         {axis: "kills", value: average.kills},
                         {axis: "assists", value: average.assists},
@@ -288,18 +314,9 @@
                         {axis: "taken", value: average.damageTaken},
                         {axis: "dealt", value: average.damageDealt},
                         {axis: "winrate", value: average.winrate}
-                    ],
-                    [
-                        {axis: "kills", value: champ.kills},
-                        {axis: "assists", value: champ.assists},
-                        {axis: "deaths", value: champ.deaths},
-                        {axis: "gold", value:champ.goldEarned},
-                        {axis: "taken", value: champ.physicalDamageTaken+champ.magicDamageTaken+champ.trueDamageTaken},
-                        {axis: "dealt", value: champ.physicalDamageDealtToChampions+champ.magicDamageDealtToChampions+champ.trueDamageDealtToChampions},
-                        {axis: "winrate", value: champ.winrate}
                     ]
                 ];  
-
+                        
                         RadarChart.draw("#champProfile", radarData);
             }
             
