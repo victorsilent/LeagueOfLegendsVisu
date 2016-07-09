@@ -1,325 +1,47 @@
 
 <html>
-<head>
-    <meta charset="utf-8">
-<script
-			  src="https://code.jquery.com/jquery-2.2.4.min.js"
-			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-			  crossorigin="anonymous"></script>
-<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
-<link rel="stylesheet" href="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.css">
-<script src="radar-chart.js"></script>
+    <head>
+        <meta charset="utf-8">
+
+        <!-- Js Core
+        ============================================================-->
+        <script
+                src="https://code.jquery.com/jquery-2.2.4.min.js"
+                integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+                crossorigin="anonymous"></script>
+        <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="radar-chart.js"></script>
+
+        <!-- CSS Core
+        ============================================================-->
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+        <link rel="stylesheet" href="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.css">
 
 
-<title>Aqui é trabalho parça</title>
-</head>
-<body>
-<div id="container"></div>
-<select form="role"  id="eixoX">
-  <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
-  <option id="Duration"value="duration">Duration</option>
-  <option value="DUO_CARRY">Ad Carry</option>
-  <option value="TOP">Top</option>
-  <option value="JUNGLE">Jungle</option>
-</select>
+        <title>Aqui é trabalho parça</title>
+    </head>
+    <body>
+        <div id="container"></div>
+        <select form="role"  id="eixoX">
+            <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
+            <option id="Duration"value="duration">Duration</option>
+            <option value="DUO_CARRY">Ad Carry</option>
+            <option value="TOP">Top</option>
+            <option value="JUNGLE">Jungle</option>
+        </select>
 
-<select form="role" id="eixoY">
-  <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
-  <option value="DUO_SUPPORT">Suporte</option>
-  <option value="DUO_CARRY">Ad Carry</option>
-  <option value="TOP">Top</option>
-  <option value="JUNGLE">Jungle</option>
-</select>
-<button id="button">Atualizar</button>
+        <select form="role" id="eixoY">
+            <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
+            <option value="DUO_SUPPORT">Suporte</option>
+            <option value="DUO_CARRY">Ad Carry</option>
+            <option value="TOP">Top</option>
+            <option value="JUNGLE">Jungle</option>
+        </select>
+        <button id="button">Atualizar</button>
 
-<div id="champProfile"></div>
-<script type="text/javascript">
-	var teste;
-	//Leitura do CSV
-	d3.json("ENOIS.json", function(data) {
-
-		
-        function generateData(eixoX,eixoY,lane=false,champ=false){
-
-            var opt1 = eixoX
-            var opt2 = eixoY
-            var series=[]
-            var seriesJungle=[]
-            var seriesAdc=[]
-            var seriesTop=[]
-            var seriesMid=[]
-            var seriesSupport=[]
-            if(lane==false){
-
-        		for(i=0;i<=data.length-1;i++){
-            			if (data[i].role=="TOP"){
-                            var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
-                            seriesTop.push(champ)
-                            champ={}
-            			}else if(data[i].role=="JUNGLE"){
-                            var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
-                            seriesJungle.push(champ)
-                            champ={}
-                        }else if(data[i].role=="MIDDLE"){
-                            var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
-                            seriesMid.push(champ)
-                            champ={}
-                        }else if(data[i].role=="DUO_CARRY"){
-                            var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
-                            seriesAdc.push(champ)
-                            champ={}
-                        }else if(data[i].role=="DUO_SUPPORT"){
-                            var champ = {name:data[i].championId,x:data[i][opt1],y:data[i][opt2]}
-                            seriesSupport.push(champ)
-                            champ={}
-                        }
-        		}
-                series=[seriesTop,seriesJungle,seriesMid,seriesAdc,seriesSupport]
-
-                return series
-            }else{
-                var damageTaken = 0,damageDealt = 0,kills = 0,assists = 0,deaths = 0,goldEarned = 0, winrate = 0,count =0
-                for(i=0;i<=data.length-1;i++){
-                    if (data[i].role==lane){
-                        if(data[i].winrate<champ.winrate){
-                            winrate     +=  1
-                        }
-                        if(data[i].totalDamageTaken<champ.totalDamageTaken){
-                            damageTaken +=  1
-                        }
-                        if(data[i].totalDamageDealtToChampions
-                            <
-                            champ.totalDamageDealtToChampions){
-
-                            damageDealt +=  1
-
-                        }
-                        if(data[i].kills<champ.kills){
-                            kills       +=  1
-                        }
-                        if(data[i].assists<champ.assists){
-                            assists     +=  1
-                        }
-                        if(data[i].deaths<champ.deaths){
-                            deaths      +=  1
-                        }
-                        if(data[i].goldEarned<champ.goldEarned){
-                            goldEarned  +=  1
-                        }
-                        count++
-                        
-                    }
-                }
-                series = {winrate:winrate,damageTaken:damageTaken,damageDealt:damageDealt,kills:kills,assists:assists,deaths:deaths,goldEarned:goldEarned,count:count}
-
-                return series
-
-            }
-
-            
-
-        }
-
-
-
-
-        $(function () {
-            $('#container').highcharts({
-                chart: {
-                    type: 'scatter',
-                    zoomType: 'xy'
-                },
-                title: {
-                    text: 'League of Legends - Data Visualization'
-                },
-                subtitle: {
-                    text: 'Itim, Zezé, Vitim, Pedrim'
-                },
-                xAxis: {
-                    title: {
-                        enabled: true,
-                        text: 'Height (cm)'
-                    },
-                    startOnTick: true,
-                    endOnTick: true,
-                    showLastLabel: true
-                },
-                yAxis: {
-                    title: {
-                        text: 'Weight (kg)'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'left',
-                    verticalAlign: 'top',
-                    x: 100,
-                    y: 70,
-                    floating: true,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-                    borderWidth: 1
-                },
-                plotOptions: {
-                     series: {
-                        cursor: 'pointer',
-                        point: {
-                            events: {
-                                click: function () {
-                                    champProfile(this)
-                                }
-                            }
-                        }
-                    },
-                    scatter: {
-                        marker: {
-                            radius: 5,
-                            states: {
-                                hover: {
-                                    enabled: true,
-                                    lineColor: 'rgb(100,100,100)'
-                                }
-                            }
-                        },
-                        states: {
-                            hover: {
-                                marker: {
-                                    enabled: false
-                                }
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '',
-                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> damage tanken<br> <b>{point.y}</b> damage dealt<br>'
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Top',
-                    color: 'rgba(27,158,119, .8)',
-                    data: []
-
-                },
-                {
-                    name: 'Jungle',
-                    color: 'rgba(217,95,2, .8)',
-                    data: []
-                },
-                {
-                    name: 'Mid',
-                    color: 'rgba(117,112,179, .8)',
-                    data: []
-                },
-                {
-                    name: 'Adc',
-                    color: 'rgba(231,41,138, .8)',
-                    data: []
-                },
-                {
-                    name: 'Support',
-                    color: 'rgba(102,166,30, .8)',
-                    data: []
-                }]
-            });
-            $('#button').click(function() {
-                //1º
-                 var indexX = document.getElementById("eixoX").selectedIndex
-                 var valueX = document.getElementById("eixoX").value
-                 var nomeCertoX=$("#eixoX option")[indexX].id
-
-                //2º
-                 var indexY = document.getElementById("eixoY").selectedIndex
-                 var valueY = document.getElementById("eixoY").value
-                 var nomeCertoY=$("#eixoY option")[indexY].id
-                 console.log(valueX+' '+valueY)
-                series = generateData(valueX,valueY)
-
-                var chart = $('#container').highcharts();
-                chart.series[0].setData(series[0], false);
-                chart.series[1].setData(series[1], false);
-                chart.series[2].setData(series[2], false);
-                chart.series[3].setData(series[3], false);
-                chart.series[4].setData(series[4], false);
-                chart.yAxis[0].axisTitle.attr({
-                    text: nomeCertoY
-                });
-                chart.xAxis[0].axisTitle.attr({
-                    text: nomeCertoX
-                });
-                for(i=0;i<=4;i++){
-                    chart.series[i].update({
-                        tooltip:{
-                            headerFormat: '',
-                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> '+ nomeCertoX+'<br> <b>{point.y}</b> '+ nomeCertoY+'<br>'
-                        }
-                    })
-                }
-                
-                $('#container').highcharts().redraw();
-
-            });
-            function champProfile(champObject){
-                var average = {}
-                var lane = "nothing"
-
-                switch(champObject.series.name){
-                    case "Mid":
-                        lane = "MIDDLE"
-                        break;
-                    case "Top":
-                        lane = "TOP"
-                        break;
-                    case "Jungle":
-                        lane = "JUNGLE"
-                        break;
-                    case "Adc":
-                        lane = "DUO_CARRY"
-                        break;
-                    case "Support":
-                        lane = "DUO_SUPPORT"
-                        break;
-                }
-                var champ ={}
-
-                for(i=0;i<=data.length-1;i++){
-
-                    if (data[i].championId==champObject.name){
-                        champ = data[i]
-                       
-                    }
-                }
-                 console.log(champ.assists)
-
-                average = generateData(0,0,lane,champ)
-                var radarData
-                radarData = [
-                    [
-                        {axis: "kills", value: Math.floor(average.count/2)},
-                        {axis: "assists", value: Math.floor(average.count/2)},
-                        {axis: "deaths", value: Math.floor(average.count/2)},
-                        {axis: "gold", value:Math.floor(average.count/2)},
-                        {axis: "taken", value: Math.floor(average.count/2)},
-                        {axis: "dealt", value: Math.floor(average.count/2)},
-                        {axis: "winrate", value: Math.floor(average.count/2)}
-                    ],
-                    [
-                        {axis: "kills", value: average.kills},
-                        {axis: "assists", value: average.assists},
-                        {axis: "deaths", value: average.deaths},
-                        {axis: "gold", value:average.goldEarned},
-                        {axis: "taken", value: average.damageTaken},
-                        {axis: "dealt", value: average.damageDealt},
-                        {axis: "winrate", value: average.winrate}
-                    ]
-                ];  
-                        console.log(radarData[1])
-                        RadarChart.draw("#champProfile", radarData);
-            }
-            
-        });
-});
-</script>
-</body>
+        <div id="champProfile"></div>
+        <script type="text/javascript" src="custom.js"></script>
+    </body>
 </html>
