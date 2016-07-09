@@ -87,14 +87,12 @@
                         if(data[i].winrate<champ.winrate){
                             winrate     +=  1
                         }
-                        if(data[i].physicalDamageTaken+data[i].magicDamageTaken+data[i].trueDamageTaken
-                            <
-                            champ.physicalDamageTaken+champ.magicDamageTaken+champ.trueDamageTaken){
+                        if(data[i].totalDamageTaken<champ.totalDamageTaken){
                             damageTaken +=  1
                         }
-                        if(data[i].physicalDamageDealtToChampions+data[i].magicDamageDealtToChampions+data[i].trueDamageDealtToChampions
+                        if(data[i].totalDamageDealtToChampions
                             <
-                            champ.physicalDamageDealtToChampions+champ.magicDamageDealtToChampions+champ.trueDamageDealtToChampions){
+                            champ.totalDamageDealtToChampions){
 
                             damageDealt +=  1
 
@@ -316,7 +314,7 @@
                         {axis: "winrate", value: average.winrate}
                     ]
                 ];  
-                        
+                        console.log(radarData[1])
                         RadarChart.draw("#champProfile", radarData);
             }
             
