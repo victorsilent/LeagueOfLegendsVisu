@@ -107,10 +107,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'League of Legends - Data Visualization'
-                },
-                subtitle: {
-                    text: 'Itim, Zezé, Vitim, Pedrim'
+                    text: null
                 },
                 xAxis: {
                     title: {
