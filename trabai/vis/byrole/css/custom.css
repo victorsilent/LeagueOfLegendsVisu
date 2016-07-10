@@ -25,10 +25,6 @@ h4{
     color: #337AB7;
     font-weight: bold;
 }
-#footer {
-  background-color: #000000;
-  padding-bottom: 10px;
-}
 #footer-header {
   margin-top: 10px;
   margin-bottom: 7px;
@@ -37,4 +33,34 @@ h4{
 #footer-text {
     margin-bottom: 2px;
     font-size: 11px;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 90px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 10px;
+  background-color: #000000;
+}
+.row {
+    margin: 0; padding: 0
+}
+.item {
+    width: 48px;
+    height: 48px;
+}
+#pieChart {
+    width: 50%;
+    height: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#profile {
+    display: none;
 }

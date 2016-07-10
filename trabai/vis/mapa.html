@@ -33,7 +33,7 @@
 
       <div id="container"></div>
 
-      <div id="options" class="col-md-12 text-center">
+      <div id="eoq" class="col-md-12 text-center">
         <label for="eixoX">X:</label>
         <select form="role"  id="eixoX">
             <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
@@ -57,14 +57,14 @@
         <button id="button" type="button" class="btn btn-primary navbar-btn">Update</button>
       </div>
 
-      <div class="row"></div>
+      <div id="eoq" class="row"></div>
 
       <br>
 
       <div class="container">
           <div class="row">
 
-              <div class="panel panel-default">
+              <div id="profile" class="panel panel-default">
                   <div class="panel-heading">
                       <h3 class="panel-title">Champion Profile</h3>
                   </div>
@@ -99,10 +99,10 @@
                           </div>
                       </div><!-- FIM DO DIV-4 -->
 
-                      <div id="radarChart" class="col-md-3">
+                      <div id="radarChart" class="col-md-3 text-center">
                           <strong>Data based on lane average</strong>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4 text-center">
                           <strong>Most frequent core build</strong>
                           <br>
                           <br>
@@ -112,6 +112,11 @@
                           <span id="item4"></span>
                           <span id="item5"></span>
                           <span id="item6"></span>
+                          <br>
+                          <br>
+                          <strong>Damage Type Composition</strong>
+                          <div id="pieChart">
+                          </div>
                       </div>
                   </div>
               </div><!--FIM DO PANEL-->

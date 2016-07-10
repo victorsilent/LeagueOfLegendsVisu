@@ -15,13 +15,14 @@
             $("#farm").children("span").text(champ.minionsKilled);
             $("#champImage").attr("src","http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+champ.championId+"_0.jpg")
             //Itens champ
-            $("#item1").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item0+'.png"alt="">')
-            $("#item2").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item1+'.png"alt="">')
-            $("#item3").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item2+'.png"alt="">')
-            $("#item4").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item3+'.png"alt="">')
-            $("#item5").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item4+'.png"alt="">')
-            $("#item6").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item5+'.png"alt="">')
+            $("#item1").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item0+'.png"alt="">')
+            $("#item2").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item1+'.png"alt="">')
+            $("#item3").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item2+'.png"alt="">')
+            $("#item4").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item3+'.png"alt="">')
+            $("#item5").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item4+'.png"alt="">')
+            $("#item6").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item5+'.png"alt="">')
         }
+
         //Gerar os dados para o scatter plot
         function generateData(eixoX,eixoY,lane=false,champ=false){
 
@@ -104,10 +105,9 @@
 
         }
 
-
-
         //Scatter Plot
         $(function () {
+            series = generateData("physicalDamageTaken", "magicDamageTaken")
             $('#container').highcharts({
                 chart: {
                     type: 'scatter',
@@ -119,7 +119,7 @@
                 xAxis: {
                     title: {
                         enabled: true,
-                        text: 'Height (cm)'
+                        text: 'Physical Damage Taken'
                     },
                     startOnTick: true,
                     endOnTick: true,
@@ -127,7 +127,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Weight (kg)'
+                        text: 'Magic Damage Taken'
                     }
                 },
                 legend: {
@@ -170,35 +170,34 @@
                         },
                         tooltip: {
                             headerFormat: '',
-                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> damage tanken<br> <b>{point.y}</b> damage dealt<br>'
+                            pointFormat: 'Champ: <b>{point.name}</b><br><b>{point.x}</b> Physical Damage Taken<br> <b>{point.y}</b> Magic Damage Taken<br>'
                         }
                     }
                 },
                 series: [{
                     name: 'Top',
                     color: 'rgba(27,158,119, .8)',
-                    data: []
-
+                    data: series[0]
                 },
                 {
                     name: 'Jungle',
                     color: 'rgba(217,95,2, .8)',
-                    data: []
+                    data: series[1]
                 },
                 {
                     name: 'Mid',
                     color: 'rgba(117,112,179, .8)',
-                    data: []
+                    data: series[2]
                 },
                 {
                     name: 'Adc',
                     color: 'rgba(231,41,138, .8)',
-                    data: []
+                    data: series[3]
                 },
                 {
                     name: 'Support',
                     color: 'rgba(102,166,30, .8)',
-                    data: []
+                    data: series[4]
                 }]
             });
 
@@ -243,6 +242,7 @@
 
             //Gerar os dados para o campeão selecionado no scatter plot
             function champProfile(champObject){
+                $("#profile").show()
                 var average = {}
                 var lane = "nothing"
 
@@ -298,9 +298,54 @@
                         {axis: "dealt", value: Math.floor(average.count/2)},
                         {axis: "winrate", value: Math.floor(average.count/2)}
                     ]
-                    
-                ];  
-                        RadarChart.draw("#radarChart", radarData);
+
+                ];
+                RadarChart.draw("#radarChart", radarData);
+
+                //Pie Chart
+                $(function () {
+                    $("#pieChart").highcharts({
+                        chart: {
+                            plotShadow: false,
+                            type: "pie"
+                        },
+                        title: {
+                            text: null
+                        },
+                        tooltip: {
+                            headerFormat: "",
+                            pointFormat: "<b>{point.name}:</b> {point.percentage:.1f} %"
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            data: [{
+                                name: "Physical Damage",
+                                color: "rgba(192, 57, 43,1.0)",
+                                y: champ.physicalDamageDealtToChampions
+                            }, {
+                                name: "Magic Damage",
+                                color: "rgba(41, 128, 185,1.0)",
+                                y: champ.magicDamageDealtToChampions
+                            }, {
+                                name: "True Damage",
+                                color: "rgba(189, 195, 199,1.0)",
+                                y: champ.trueDamageDealtToChampions
+                            }]
+                        }]
+                    });
+                });
             }
         });
 });
