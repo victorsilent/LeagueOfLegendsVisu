@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="byrole/css/bootstrap.min.css">
         <link rel="stylesheet" href="byrole/css/custom.css">
 
-        <title>Aqui é trabalho parça</title>
+        <title>Champion Performance</title>
     </head>
     <body>
       <nav class="navbar navbar-inverse navbar-static-top">
@@ -31,96 +31,114 @@
           </div>
         </nav>
 
-        <div id="container"></div>
+      <div id="container"></div>
 
+      <div id="options" class="col-md-12 text-center">
+        <label for="eixoX">X:</label>
+        <select form="role"  id="eixoX">
+            <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
+            <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
+            <option id="Magic Damage Delt" value="magicDamageDealtToChampions">Magic Damage Delt</option>
+            <option id="Physical Damage Delt" value="physicalDamageDealtToChampions">Physical Damage Delt</option>
+            <option id="Duration" value="duration">Duration</option>
+            <option id="Winrate" value="winrate">Winrate</option>
+        </select>
 
-        <div id="options" class="col-md-12 text-center">
-          <label for="eixoX">X:</label>
-          <select form="role"  id="eixoX">
-              <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
-              <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
-              <option id="Magic Damage Delt" value="magicDamageDealtToChampions">Magic Damage Delt</option>
-              <option id="Physical Damage Delt" value="physicalDamageDealtToChampions">Physical Damage Delt</option>
-              <option id="Duration" value="duration">Duration</option>
-              <option id="Winrate" value="winrate">Winrate</option>
-          </select>
+        <label for="eixoX">Y:</label>
+        <select form="role" id="eixoY">
+            <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
+            <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
+            <option id="Magic Damage Delt" value="magicDamageDealtToChampions">Magic Damage Delt</option>
+            <option id="Physical Damage Delt" value="physicalDamageDealtToChampions">Physical Damage Delt</option>
+            <option id="Duration" value="duration">Duration</option>
+            <option id="Winrate" value="winrate">Winrate</option>
+        </select>
 
-          <label for="eixoX">Y:</label>
-          <select form="role" id="eixoY">
-              <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
-              <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
-              <option id="Magic Damage Delt" value="magicDamageDealtToChampions">Magic Damage Delt</option>
-              <option id="Physical Damage Delt" value="physicalDamageDealtToChampions">Physical Damage Delt</option>
-              <option id="Duration" value="duration">Duration</option>
-              <option id="Winrate" value="winrate">Winrate</option>
-          </select>
+        <button id="button" type="button" class="btn btn-primary navbar-btn">Update</button>
+      </div>
 
-          <button id="button" type="button" class="btn btn-primary navbar-btn">Update</button>
+      <div class="row"></div>
+
+      <br>
+
+      <div class="container">
+          <div class="row">
+
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">Champion Profile</h3>
+                  </div>
+                  <div class="panel-body">
+                      <div class="col-md-2">
+                          <img id="champImage" src="http://ddragon.leagueoflegends.com/cdn/img/champion/loading/DrMundo_0.jpg"alt="">
+                      </div>
+                      <div class="col-md-3">
+                          <div class="col-md-8">
+                              <li class="attrchamp"><span class="classProfile">Winrate: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Popularity: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Damage Taken: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Damage Dealt: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Level Average: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Matches Duration: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Kills: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Deaths: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Assists: </span></li>
+                              <li class="attrchamp"><span class="classProfile">Farm: </span></li>
+                          </div>
+                          <div class="col-md-4">
+                              <li class="attrchamp" id="winrate"><span class="attrProfile">53.23%</span></li>
+                              <li class="attrchamp" id="popularity"><span class="attrProfile">13.21%</span></li>
+                              <li class="attrchamp" id="damageTaken"><span class="attrProfile">43123.20</span></li>
+                              <li class="attrchamp" id="damageDealt"><span class="attrProfile">83123.20</span></li>
+                              <li class="attrchamp" id="levelAverage"><span class="attrProfile">12</span></li>
+                              <li class="attrchamp" id="durationAverage"><span class="attrProfile">25.12</span></li>
+                              <li class="attrchamp" id="kills"><span class="attrProfile">7.3</span></li>
+                              <li class="attrchamp" id="deaths"><span class="attrProfile">5.2</span></li>
+                              <li class="attrchamp" id="assists"><span class="attrProfile">12.3</span></li>
+                              <li class="attrchamp" id="farm"><span class="attrProfile">210.3</span></li>
+                          </div>
+                      </div><!-- FIM DO DIV-4 -->
+
+                      <div id="radarChart" class="col-md-3">
+                          <strong>Data based on lane average</strong>
+                      </div>
+                      <div class="col-md-3">
+                          <strong>Most frequent core build</strong>
+                          <br>
+                          <br>
+                          <span id="item1"></span>
+                          <span id="item2"></span>
+                          <span id="item3"></span>
+                          <span id="item4"></span>
+                          <span id="item5"></span>
+                          <span id="item6"></span>
+                      </div>
+                  </div>
+              </div><!--FIM DO PANEL-->
+
+          </div>
+      </div>
+
+      <footer class="footer">
+        <div id="footer" class="row">
+          <div class="col-md-4 text-center">
+            <p id="footer-header" class="text-primary">Created by</p>
+            <p id="footer-text" class="text-muted">Italo, Esdras</p>
+            <p id="footer-text" class="text-muted">João Victor, Pedro</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <p id="footer-header" class="text-primary">Using</p>
+            <p id="footer-text" class="text-muted">Highcharts, D3.js</p>
+            <p id="footer-text" class="text-muted">DC.js, Bootstrap, Ruby</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <p id="footer-header" class="text-primary">About it</p>
+            <p id="footer-text" class="text-muted">Site feito como trabalho da cadeira de Visualização de Dados</p>
+            <p id="footer-text" class="text-muted">Computação - UFC.</p>
+          </div>
         </div>
+      </footer>
 
-        <div class="row"></div>
-
-        <br>
-
-    <div class="container">
-        <div class="row">
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Champion Profile</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="col-md-2">
-                        <img id="champImage" src="http://ddragon.leagueoflegends.com/cdn/img/champion/loading/DrMundo_0.jpg"alt="">
-                    </div>
-                    <div class="col-md-3">
-                        <div class="col-md-8">
-                            <li class="attrchamp"><span class="classProfile">Winrate: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Popularity: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Damage Taken: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Damage Dealt: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Level Average: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Matches Duration: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Kills: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Deaths: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Assists: </span></li>
-                            <li class="attrchamp"><span class="classProfile">Farm: </span></li>
-                        </div>
-                        <div class="col-md-4">
-                            <li class="attrchamp" id="winrate"><span class="attrProfile">53.23%</span></li>
-                            <li class="attrchamp" id="popularity"><span class="attrProfile">13.21%</span></li>
-                            <li class="attrchamp" id="damageTaken"><span class="attrProfile">43123.20</span></li>
-                            <li class="attrchamp" id="damageDealt"><span class="attrProfile">83123.20</span></li>
-                            <li class="attrchamp" id="levelAverage"><span class="attrProfile">12</span></li>
-                            <li class="attrchamp" id="durationAverage"><span class="attrProfile">25.12</span></li>
-                            <li class="attrchamp" id="kills"><span class="attrProfile">7.3</span></li>
-                            <li class="attrchamp" id="deaths"><span class="attrProfile">5.2</span></li>
-                            <li class="attrchamp" id="assists"><span class="attrProfile">12.3</span></li>
-                            <li class="attrchamp" id="farm"><span class="attrProfile">210.3</span></li>
-                        </div>
-                    </div><!-- FIM DO DIV-4 -->
-
-                    <div id="radarChart" class="col-md-3">
-                        <strong>Data based on lane average</strong>
-                    </div>
-                    <div class="col-md-3">
-                        <strong>Most frequent core build</strong>
-                        <br>
-                        <br>
-                        <span id="item1"></span>
-                        <span id="item2"></span>
-                        <span id="item3"></span>
-                        <span id="item4"></span>
-                        <span id="item5"></span>
-                        <span id="item6"></span>
-                    </div>
-                </div>
-            </div><!--FIM DO PANEL-->
-
-        </div>
-    </div>
-
-
-        <script type="text/javascript" src="custom.js"></script>
+      <script type="text/javascript" src="custom.js"></script>
     </body>
 </html>
