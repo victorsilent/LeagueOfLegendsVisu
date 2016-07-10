@@ -3,8 +3,8 @@
     d3.json("ENOIS.json", function(data) {
 
         function setProfileData(champ){
-            $("#damageTaken").text(champ.totalDamageTaken);
-            $("#duration").text();
+            $("#damageTaken").children("span").text(champ.totalDamageTaken);
+            $("#damageTaken").children("span").text(champ.totalDamageTaken);;
         }
         //Gerar os dados para o scatter plot
         function generateData(eixoX,eixoY,lane=false,champ=false){
@@ -287,7 +287,6 @@
                     ]
                     
                 ];  
-                        console.log(radarData[1])
                         RadarChart.draw("#champProfile", radarData);
             }
         });
