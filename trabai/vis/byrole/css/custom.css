@@ -7,7 +7,7 @@
 h4{
   margin-top: 3px;
 }
-img{
+#champImage{
     width: 100%;
 }
 .attrchamp:not(:first-child){
@@ -16,11 +16,12 @@ img{
 .attrchamp{
     list-style-type: none;
 }
+
 .classProfile{
     font-weight: bold;
     color:#34495e;
 }
 .attrProfile{
-    color: #16a085;
+    color: #337AB7;
     font-weight: bold;
 }

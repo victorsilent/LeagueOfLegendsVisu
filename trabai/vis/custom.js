@@ -13,7 +13,14 @@
             $("#deaths").children("span").text(champ.deaths);
             $("#assists").children("span").text(champ.assists);
             $("#farm").children("span").text(champ.minionsKilled);
-            console.log($("#champImage").attr("src","http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+champ.championId+"_0.jpg"))
+            $("#champImage").attr("src","http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+champ.championId+"_0.jpg")
+            //Itens champ
+            $("#item1").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item0+'.png"alt="">')
+            $("#item2").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item1+'.png"alt="">')
+            $("#item3").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item2+'.png"alt="">')
+            $("#item4").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item3+'.png"alt="">')
+            $("#item5").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item4+'.png"alt="">')
+            $("#item6").html('<img  src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item5+'.png"alt="">')
         }
         //Gerar os dados para o scatter plot
         function generateData(eixoX,eixoY,lane=false,champ=false){
