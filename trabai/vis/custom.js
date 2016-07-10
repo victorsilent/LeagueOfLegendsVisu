@@ -4,7 +4,16 @@
 
         function setProfileData(champ){
             $("#damageTaken").children("span").text(champ.totalDamageTaken);
-            $("#damageTaken").children("span").text(champ.totalDamageTaken);;
+            $("#winrate").children("span").text(champ.winrate);
+            $("#popularity").children("span").text(champ.count/1000);
+            $("#damageDealt").children("span").text(champ.totalDamageDealtToChampions);
+            $("#levelAverage").children("span").text(champ.champLevel);
+            $("#durationAverage").children("span").text(champ.duration);
+            $("#kills").children("span").text(champ.kills);
+            $("#deaths").children("span").text(champ.deaths);
+            $("#assists").children("span").text(champ.assists);
+            $("#farm").children("span").text(champ.minionsKilled);
+            console.log($("#champImage").attr("src","http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+champ.championId+"_0.jpg"))
         }
         //Gerar os dados para o scatter plot
         function generateData(eixoX,eixoY,lane=false,champ=false){
