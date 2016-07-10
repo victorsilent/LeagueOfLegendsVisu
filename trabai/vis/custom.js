@@ -293,7 +293,7 @@
                     ]
                     
                 ];  
-                        RadarChart.draw("#champProfile", radarData);
+                        RadarChart.draw("#radarChart", radarData);
             }
         });
 });
