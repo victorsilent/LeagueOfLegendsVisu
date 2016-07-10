@@ -18,28 +18,42 @@
         ============================================================-->
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
         <link rel="stylesheet" href="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.css">
-
+        <link rel="stylesheet" href="byrole/css/bootstrap.min.css">
+        <link rel="stylesheet" href="byrole/css/custom.css">
 
         <title>Aqui é trabalho parça</title>
     </head>
     <body>
-        <div id="container"></div>
-        <select form="role"  id="eixoX">
-            <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
-            <option id="Duration"value="duration">Duration</option>
-            <option value="DUO_CARRY">Ad Carry</option>
-            <option value="TOP">Top</option>
-            <option value="JUNGLE">Jungle</option>
-        </select>
+      <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">League of Legends - Visualização de dados</a>
+          </div>
+        </nav>
 
-        <select form="role" id="eixoY">
-            <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
-            <option value="DUO_SUPPORT">Suporte</option>
-            <option value="DUO_CARRY">Ad Carry</option>
-            <option value="TOP">Top</option>
-            <option value="JUNGLE">Jungle</option>
-        </select>
-        <button id="button">Atualizar</button>
+        <div id="container"></div>
+
+        <div id="options" class="col-md-4 col-md-offset-4 text-center">
+          <label for="eixoX">X:</label>
+          <select form="role"  id="eixoX">
+              <option id="Magic Damage Taken" value="magicDamageTaken">Magic Damage Taken</option>
+              <option id="Duration"value="duration">Duration</option>
+              <option value="DUO_CARRY">Ad Carry</option>
+              <option value="TOP">Top</option>
+              <option value="JUNGLE">Jungle</option>
+          </select>
+
+          <label for="eixoX">Y:</label>
+          <select form="role" id="eixoY">
+              <option id="Physical Damage Taken" value="physicalDamageTaken">Physical Damage Taken</option>
+              <option value="DUO_SUPPORT">Suporte</option>
+              <option value="DUO_CARRY">Ad Carry</option>
+              <option value="TOP">Top</option>
+              <option value="JUNGLE">Jungle</option>
+          </select>
+
+          <button id="button" type="button" class="btn btn-primary navbar-btn">Atualizar</button>
+        </div>
 
         <div id="champProfile"></div>
         <script type="text/javascript" src="custom.js"></script>
