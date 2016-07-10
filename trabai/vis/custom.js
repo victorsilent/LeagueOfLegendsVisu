@@ -2,7 +2,11 @@
     //Leitura do CSV
     d3.json("ENOIS.json", function(data) {
 
-
+        function setProfileData(champ){
+            $("#damageTaken").text(champ.totalDamageTaken);
+            $("#duration").text();
+        }
+        //Gerar os dados para o scatter plot
         function generateData(eixoX,eixoY,lane=false,champ=false){
 
             var opt1 = eixoX
@@ -86,7 +90,7 @@
 
 
 
-
+        //Scatter Plot
         $(function () {
             $('#container').highcharts({
                 chart: {
@@ -184,13 +188,15 @@
                     data: []
                 }]
             });
+
+            //Função para atualizar o grafico do scatter plot
             $('#button').click(function() {
-                //1º
+                //1º select
                  var indexX = document.getElementById("eixoX").selectedIndex
                  var valueX = document.getElementById("eixoX").value
                  var nomeCertoX=$("#eixoX option")[indexX].id
 
-                //2º
+                //2º select
                  var indexY = document.getElementById("eixoY").selectedIndex
                  var valueY = document.getElementById("eixoY").value
                  var nomeCertoY=$("#eixoY option")[indexY].id
@@ -221,6 +227,8 @@
                 $('#container').highcharts().redraw();
 
             });
+
+            //Gerar os dados para o campeão selecionado no scatter plot
             function champProfile(champObject){
                 var average = {}
                 var lane = "nothing"
@@ -251,20 +259,14 @@
 
                     }
                 }
-                 console.log(champ.assists)
-
                 average = generateData(0,0,lane,champ)
+
+
+                setProfileData(champ);
+
+                //Radar generate
                 var radarData
                 radarData = [
-                    [
-                        {axis: "kills", value: Math.floor(average.count/2)},
-                        {axis: "assists", value: Math.floor(average.count/2)},
-                        {axis: "deaths", value: Math.floor(average.count/2)},
-                        {axis: "gold", value:Math.floor(average.count/2)},
-                        {axis: "taken", value: Math.floor(average.count/2)},
-                        {axis: "dealt", value: Math.floor(average.count/2)},
-                        {axis: "winrate", value: Math.floor(average.count/2)}
-                    ],
                     [
                         {axis: "kills", value: average.kills},
                         {axis: "assists", value: average.assists},
@@ -273,11 +275,20 @@
                         {axis: "taken", value: average.damageTaken},
                         {axis: "dealt", value: average.damageDealt},
                         {axis: "winrate", value: average.winrate}
+                    ],
+                    [
+                        {axis: "kills", value: Math.floor(average.count/2)},
+                        {axis: "assists", value: Math.floor(average.count/2)},
+                        {axis: "deaths", value: Math.floor(average.count/2)},
+                        {axis: "gold", value:Math.floor(average.count/2)},
+                        {axis: "taken", value: Math.floor(average.count/2)},
+                        {axis: "dealt", value: Math.floor(average.count/2)},
+                        {axis: "winrate", value: Math.floor(average.count/2)}
                     ]
+                    
                 ];  
                         console.log(radarData[1])
                         RadarChart.draw("#champProfile", radarData);
             }
-
         });
 });
