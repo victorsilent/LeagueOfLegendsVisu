@@ -21,6 +21,7 @@
             $("#item4").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item3+'.png"alt="">')
             $("#item5").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item4+'.png"alt="">')
             $("#item6").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item5+'.png"alt="">')
+            $("#item7").html('<img class="item" src="http://ddragon.leagueoflegends.com/cdn/6.14.1/img/item/'+champ.item6+'.png"alt="">')
         }
 
         //Gerar os dados para o scatter plot
@@ -112,6 +113,7 @@
                 chart: {
                     type: 'scatter',
                     zoomType: 'xy'
+
                 },
                 title: {
                     text: null
@@ -307,11 +309,13 @@
                     $("#pieChart").highcharts({
                         chart: {
                             plotShadow: false,
-                            type: "pie"
+                            type: "pie",
+
                         },
                         title: {
                             text: null
                         },
+                        exporting: { enabled: false },
                         tooltip: {
                             headerFormat: "",
                             pointFormat: "<b>{point.name}:</b> {point.percentage:.1f} %"
